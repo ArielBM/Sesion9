@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-	return "<H1>El lab de ipc1 sale en vacas</H1>"
+	return "<H1>Está página está desde el repositorio</H1>"
 
 
 if __name__ == "__main__":
