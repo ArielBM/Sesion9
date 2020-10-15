@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from Usuario import Usuario
+from flask_cors import CORS
 
 misUsuario = []
 misUsuario.append(Usuario(1,'usuario1','123'))
@@ -7,6 +8,7 @@ misUsuario.append(Usuario(2,'usuario2','123'))
 
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/login', methods=['POST'])
 def login():
