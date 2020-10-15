@@ -11,3 +11,15 @@ class Pokemon:
 
 	def imprimir_tipo(self):
 		print(self.nombre + ' es de tipo: ' + self.tipo);
+
+
+	def dump(self):
+
+		return {
+
+			'id' : self.id,
+			'nombre' : self.nombre,
+			'especie' : self.especie,
+			'tipo' : self.tipo,
+			'foto' : self.foto
+		}

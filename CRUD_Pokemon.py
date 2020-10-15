@@ -1,4 +1,5 @@
 from Pokemon import Pokemon
+import json
 
 class CRUD_Pokemon:
 
@@ -23,6 +24,16 @@ class CRUD_Pokemon:
 		self.contador += 1
 		return True
 
+	def buscar(self, nombre):
+
+		for poke in self.pokemon:
+
+			if poke.nombre == nombre:
+
+				return poke.dump()
+
+		return None
+
 
 	def listar(self):
 
@@ -31,3 +42,9 @@ class CRUD_Pokemon:
 		for poke in self.pokemon:
 
 			print(str(poke.id) + '\t' + poke.especie + '\t\t' + poke.nombre)
+
+
+	def devolver_pokemon(self):
+
+		return json.dumps([ poke.dump() for poke in self.pokemon ])
+
