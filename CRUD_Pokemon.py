@@ -3,48 +3,27 @@ import json
 
 class CRUD_Pokemon:
 
-	#CONSTRUCTOR
-	def __init__(self):
+    def __init__(self):
+        self.misPokemon = []
 
-		self.pokemon = []
-		self.contador = 0
+    
+    #MÉTODO PARA INSERTAR UN POKÉMON
+    def insertar(self, id, nombre, tipo1, tipo2, total, hp, ataque, defensa, ataqueEs, defensaEs, velocidad,generacion,legendario, foto):
 
+        self.misPokemon.append(Pokemon(id, nombre, tipo1, tipo2, total, hp, ataque, defensa, ataqueEs, defensaEs, velocidad,generacion,legendario, foto))
 
-	#MÉTODO PARA CREAR POKEMON
-	def crear(self,nombre,especie,tipo,foto):
+    
+    #MÉTODO PARA OBTENER UN POKÉMON MEDIANTE SU ID
+    def obtener_por_id(self, id):
 
-		for poke in self.pokemon:
+        for pokemon in self.misPokemon:
+            if pokemon.id == id:
+                return pokemon.dump()
 
-			if poke.nombre == nombre:
-				print('el nombre de usuario ya está en uso')
-				return False
-
-		nuevo = Pokemon(self.contador,nombre,especie,tipo,foto)
-		self.pokemon.append(nuevo)
-		self.contador += 1
-		return True
-
-	def buscar(self, nombre):
-
-		for poke in self.pokemon:
-
-			if poke.nombre == nombre:
-
-				return poke.dump()
-
-		return None
+        return None
 
 
-	def listar(self):
+    #MÉTODO PARA OBTENER TODOS LOS POKÉMON
+    def obtener_todos(self):
 
-		print('id:\tTipo:\t\tNombre de usuario:')
-
-		for poke in self.pokemon:
-
-			print(str(poke.id) + '\t' + poke.especie + '\t\t' + poke.nombre)
-
-
-	def devolver_pokemon(self):
-
-		return json.dumps([ poke.dump() for poke in self.pokemon ])
-
+        return json.dumps([pokemon.dump() for pokemon in self.misPokemon]) 

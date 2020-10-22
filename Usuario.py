@@ -1,26 +1,38 @@
-
+# public class Usuario
 class Usuario:
 
-	def __init__(self, id, usuario, passw):
+    # public Usuario(int id, String nombre, String foto, String nombre_usuario, String contrasenia)
+    def __init__(self, id, nombre, foto, nombre_usuario, contrasenia):
 
-		self.id = id
-		self.usuario = usuario
-		self.passw = passw
+        self.id = id
+        self.nombre = nombre
+        self.foto = foto
+        self.nombre_usuario = nombre_usuario
+        self.contrasenia = contrasenia
 
-	def autenticar(self, usuario, passw):
+    # public void autenticar(String nombre_usuario, String contrasenia)
 
-		if self.usuario == usuario and self.passw == passw:
+    def autenticar(self, nombre_usuario, contrasenia):
 
-			print("La autenticación fue correcta")
-			return True
+        if self.nombre_usuario == nombre_usuario and self.contrasenia == contrasenia:
+            return True
+        return False
 
-		print ("La autenticación fue incorrecta")
-		return False
+    def modificar_datos(self, nombre, foto, nombre_usuario, contrasenia):
 
-	def dump(self):
+        self.id = id
+        self.nombre = nombre
+        self.foto = foto
+        self.nombre_usuario = nombre_usuario
+        self.contrasenia = contrasenia
 
-		return {
+    def dump(self):
 
-			'id' : self.id,
-			'nombre' : self.usuario
-		}
+        return {
+
+            'id': self.id,
+            'nombre': self.nombre,
+            'foto':  self.foto,
+            'nombre_usuario': self.nombre_usuario
+
+        }

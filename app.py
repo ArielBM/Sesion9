@@ -2,95 +2,90 @@ from flask import Flask, request, jsonify
 from Usuario import Usuario
 from flask_cors import CORS
 from CRUD_Pokemon import CRUD_Pokemon
+from CRUD_Usuarios import CRUD_Usuario
 
-misUsuario = []
-misUsuario.append(Usuario(1,'usuario1','123'))
-misUsuario.append(Usuario(2,'usuario2','123'))
 
 mis_pokemon = CRUD_Pokemon()
+mis_usuarios = CRUD_Usuario()
+mis_usuarios.crear('Ariel Bautista Méndez', 'foto.png', 'arielbm', 'mypass')
 
 
 app = Flask(__name__)
 CORS(app)
 
+
 @app.route('/login', methods=['POST'])
 def login():
 
-	if request.method == 'POST':
+    if request.method == 'POST':
 
-		response = {}
+        response = {}
 
+        nombre = request.form.get('nombre_usuario')
+        passw = request.form.get('passw_usuario')
 
-		nombre = request.form.get('nombre_usuario')
-		passw = request.form.get('passw_usuario')
+        usuario = mis_usuarios.autenticar(nombre, passw)
+        
 
-		for user in misUsuario:
+        if usuario is not False:
 
-			if user.autenticar(nombre,passw) == True:
+            response["id"] = usuario.id
+            response["usuario"] = usuario.nombre
+            response["estado"] = 1
 
-				response["id"] =user.id
-				response["usuario"] = user.usuario
-				response["estado"] = 1
+            return response
 
-				return response
+        response["estado"] = 0
 
-		response["estado"] = 0
-
-		return response
-
-
-@app.route('/pokemon', methods=['GET','POST'])
-def pokemon():
-
-	response = {}
-
-	if request.method == 'POST':
-
-		nombre_p = request.form.get('nombre_poke')
-		especie_p = request.form.get('especie_poke')
-		tipo_p = request.form.get('tipo_poke')
-		foto_p = request.form.get('foto_poke')
-
-		if mis_pokemon.crear(nombre_p,especie_p,tipo_p,foto_p) == True:
-
-			response['estado'] = 1
-			return response
-
-		response['estado'] = 0
-		return response
-
-	if request.method == 'GET':
-
-		return  mis_pokemon.devolver_pokemon()
+        return response
 
 
-@app.route("/single_poke",methods=['GET'])
-def single_poke():
+@app.route('/obtener-pokemon')
+def obtener_pokemon():
 
-	if request.method == 'GET':
+    id = int(request.args.get("id", None))
+    poke = mis_pokemon.obtener_por_id(id)
 
-		nombre = request.args.get("nombre", None)
-		response = {}
+    if poke is not None:
 
-		poke = mis_pokemon.buscar(nombre)
+        return {
+            'estado': 1,
+            'id': id,
+            'data': poke
+        }
 
-		if poke == None:
+    else:
 
-			response['estado'] = 0
+        return {
+            'estado': 0,
+            'id': id,
+            'data': 'Pokémon no encontrado'
+        }
 
-		else:
 
-			response['estado'] = 1
-			response['pokemon'] = poke
+@app.route('/obtener-todos-p')
+def obtener_todos_p():
 
-		return response
+    return mis_pokemon.obtener_todos()
+
+
+def foto_poke(id):
+
+    result = int(id)/100
+    if result >= 0.01 and result <= 0.09:
+        return 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/00' + str(id) + '.png'
+
+    elif result >= 0.1 and result <= 0.99:
+        return 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/0' + str(id) + '.png'
+
+    else:
+        return 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/' + str(id) + '.png'
 
 
 @app.route("/")
 def index():
-	nombre = misUsuario[0].usuario
-	return "<H1>" + nombre + "</H1>"
+    return "<H1>Bienvenido a mis dominios</H1>"
 
 
 if __name__ == "__main__":
-	app.run(threaded=True, port=5000,debug=True)
+    app.run(threaded=True, port=5000, debug=True)
